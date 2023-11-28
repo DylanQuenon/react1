@@ -21,7 +21,7 @@ const league = {
     age: 33
    },
    membre5: {
-    nom: 'Kaarisman',
+    nom: 'Mowgli',
     age: 39
    }
 }
@@ -29,7 +29,8 @@ const league = {
 class App extends Component {
   state = { 
     league: league,
-    plus: 2
+    plus: 2,
+    isShow:false
    }
    componentDidMount(){ //le composant va se créer
     console.log('montage')
@@ -46,6 +47,11 @@ class App extends Component {
     this.setState({league})
   } 
 
+  handleShow=() => {
+    const isShow=!this.state.isShow
+    this.setState({isShow})
+  }
+
   render() { 
     const list = Object.keys(this.state.league).map(iteration => {
       return(
@@ -57,6 +63,18 @@ class App extends Component {
       <>
         <h1>Hello World!</h1>
         {list}
+        <Membre 
+        nom="Hante Twane"
+        age={23}
+        >
+          {
+            this.state.isShow? <strong>DJO</strong> : null
+          }
+   
+          <button onClick={this.handleShow}>
+            {this.state.isShow?'Cacher':'Montrer'}
+          </button>
+        </Membre>
    
         
 
