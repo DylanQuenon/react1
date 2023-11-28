@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import './App.css'
 import Membre from './components/Membre';
-import Button from './components/Button';
+
 
 const league = {
    membre1: {
@@ -21,68 +21,97 @@ const league = {
     age: 33
    },
    membre5: {
-    nom: 'Mowgli',
-    age: 39
+    nom: "Robin",
+    age: 25
    }
 }
 
 class App extends Component {
   state = { 
     league: league,
-    plus: 2,
-    isShow:false
+    plus: 2, 
+    isShow: false
    }
-   componentDidMount(){ //le composant va se créer
+
+   componentDidMount() {
     console.log('montage')
    }
-   componentDidUpdate(){
-    console.log('je recharche mon composant')
+
+   componentDidUpdate() {
+    console.log('je recharge mon composant')
    }
-   componentWillUnmount(){
-    console.log('démontage') //le composant va se démonter
+
+   componentWillUnmount()
+   {
+    console.log('démontage')
    }
-  handleClick = (nb) =>{
+   
+  handleClick = (id,nb) =>{
     const league = {...this.state.league}
-    league.membre1.age +=nb
+    league[id].age +=nb
     this.setState({league})
   } 
 
-  handleShow=() => {
-    const isShow=!this.state.isShow
+  handleChange = (event, id) => {
+    const league = {...this.state.league}
+    const nom = event.target.value
+    league[id].nom = nom
+    this.setState({league:league})
+  }
+
+  hideName = (id) => {
+    const league = {...this.state.league}
+    league[id].nom = "X"
+    league[id].age = 0
+    this.setState({league:league})
+  }
+
+  handleShow = () => {
+    const isShow = !this.state.isShow 
     this.setState({isShow})
   }
 
-  render() { 
+  render() {
     const list = Object.keys(this.state.league).map(iteration => {
-      return(
-        <Membre key={iteration} age={this.state.league[iteration].age} nom={this.state.league[iteration].nom} />
+      return (
+        <Membre 
+          key={iteration}
+          handleChange={(event) => this.handleChange(event, iteration)}
+          hideName={()=> this.hideName(iteration)}
+          plus={this.state.plus}
+          handleClick={() => this.handleClick(iteration, this.state.plus)} 
+          age={this.state.league[iteration].age} 
+          nom={this.state.league[iteration].nom} 
+        />
       )
     })
     
+
     return (
       <>
         <h1>Hello World!</h1>
         {list}
-        <Membre 
-        nom="Hante Twane"
-        age={23}
+        <Membre
+          age="50"
+          nom="Jordan"
         >
           {
-            this.state.isShow? <strong>DJO</strong> : null
+            this.state.isShow ? <strong>Je suis le GOAT</strong> :  null
           }
-   
+          
           <button onClick={this.handleShow}>
-            {this.state.isShow?'Cacher':'Montrer'}
+            {this.state.isShow ? 'Cacher' : 'Montrer'}
           </button>
+
         </Membre>
    
         
 
-        <Button 
+        {/* <Button 
           plus={this.state.plus}
           veillir={() => this.handleClick(this.state.plus)}
-        />
-
+        /> */}
+        
       </>
     )
    // return React.createElement('div',{className: 'app'}, React.createElement('h1',null,'Hello World'))
